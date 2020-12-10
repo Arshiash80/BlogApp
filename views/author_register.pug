@@ -1,0 +1,34 @@
+extends layout
+
+block content
+    if errors 
+        each error in errors
+            li #{error.msg}
+    form(action="", method="post")
+        div.form-group
+            label(for="first_name") Enter youre first name: #[strong(style="color:red;") *]
+            input#first_name.form-control(type="text", name="first_name", placeholder="First name", value=(undefined === author ? '' : author.first_name), required= true)
+        div.form-group
+            label(for="family_name") Enter youre family name: #[strong(style="color:red;") *]
+            input#family_name.form-control(type="text", name="family_name", placeholder="Family name", value=(undefined === author ? '' : author.family_name), required= true)
+        div.form-group    
+            label(for="username") Username: #[strong(style="color:red;") *]
+            div.input-group.mb-3
+                span.input-group-text#basic-addon1 @
+                input.form-control#username(name="username" type="text" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1", value=(undefined === author ? '' : author.username), required= true)
+        div.form-group  
+            label(for="email") Email: #[strong(style="color:red;") *]
+            div.input-group.mb-3
+                input.form-control#email(name="email" type="text" placeholder="Enter youre email" aria-label="Recipient's username" aria-describedby="basic-addon2", value=(undefined === author ? '' : author.email), required= true)
+                span.input-group-text#basic-addon2 @gmail.com
+
+        div.form-group
+            label(for="password") Password: #[strong(style="color:red;") *]
+            input#password.form-control(type="password", name="password", placeholder="Password", required= true)
+        div.form-group
+            label(for="confirm_password") Confirm password: #[strong(style="color:red;") *]
+            input#confirm_password.form-control(type="password", name="confirm_password", placeholder="Confirm password", required= true)        
+        br
+        button.btn.btn-primary(type='submit') Register
+    br
+    p You already have an account? go to #[a(href="/blog/author/login")(style="font-weight:700;") Login page.]

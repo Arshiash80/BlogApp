@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    form(action="", method="post")
+        div.form-group
+            label(for="email") Email adress: #[strong(style="color:red;") *]
+            input#email.form-control(type="email", name="email", placeholder="Email adress", required= true)
+        div.form-group
+            label(for="password") Password: #[strong(style="color:red;") *]
+            input#password.form-control(type="password", name="password", placeholder="Password", required= true)
+        br
+        button.btn.btn-primary(type='submit') Login
+    br
+    p You don't have an account? go to #[a(href="/blog/author/register")(style="font-weight:700;") Register page.]
