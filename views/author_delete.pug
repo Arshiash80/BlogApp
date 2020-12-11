@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    div.alert.alert-danger(role="alert") You are about to delete youre account!
+    form(action="" method="POST")
+        label(for="authorEnsure") If yo sure type youre user name : "#{auth.username}". 
+        input#authorEnsure.form-control(type="text", name="authorEnsure", placeholder="Enter youre username.", required= true)
+        br
+        button.btn.btn-danger(type='submit') Delete

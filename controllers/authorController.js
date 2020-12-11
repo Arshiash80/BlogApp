@@ -226,6 +226,29 @@ exports.author_register_post = [
         }
 ]
 
+// Display Author delete profile page. -GET-
+exports.author_deleteProfile_get = (req, res, next) => {
+    res.render("author_delete", { title: `Delete ${req.user._id}`, auth: req.user })
+}
+
+// Handle Author delete account request. -POST-
+exports.author_deleteProfile_post = (req, res, next) => {
+    console.log(req.body.authorEnsure)
+    console.log(req.user.username)
+    if (req.body.authorEnsure === req.user.username) {
+        console.log("Here")
+        Author.findByIdAndRemove(req.user._id, {}, (err, author) => {
+            if (err) { return next(err) }
+            author.save()
+
+        })
+        res.redirect('/')
+    } else {
+        res.render("author_delete", { title: `Delete ${req.user._id}`, auth: req.user })
+    }
+}
+
+
 // Display Author login form. -GET-
 exports.author_login_get = (req, res, next) => {
     res.render('author_login', { title: "Login", logged_in: false })

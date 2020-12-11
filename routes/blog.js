@@ -23,6 +23,12 @@ router.get("/author/profile/edit", auth.esureAuthenticated, authorController.aut
 // POST requst for edit Author profile
 router.post("/author/profile/edit", auth.esureAuthenticated, authorController.author_editProfile_post)
 
+// GET requst for delete account
+router.get("/author/profile/delete", auth.esureAuthenticated, authorController.author_deleteProfile_get)
+
+// POST requst for delete account
+router.post("/author/profile/delete", auth.esureAuthenticated, authorController.author_deleteProfile_post)
+
 // GET request for display Author register form page.
 router.get('/author/register', authorController.author_register_get)
 
