@@ -5,7 +5,9 @@ const bcrypt = require('bcrypt')
 
 const passport = require('passport')
 
-const async = require('async')
+const async = require('async');
+const auth = require('../configs/auth');
+const { RequestTimeout } = require('http-errors');
 
 
 // TODO: Implement authors list page.
@@ -34,22 +36,71 @@ exports.author_profile = (req, res, next) => {
     res.render("author_profile", { title: "Profile", auth: req.user })
 }
 
-
-
-// TODO: Implent Author edit form.
-// /////////////////////////////////////////
 // Display author profile edit form. -GET-
 exports.author_editProfile_get = (req, res, next) => {
-    res.send("NOT IMPLEMENTED!")
+    res.render("author_register", { title:"Edit profile", auth: req.user })
 }
 // Handle author profile edit form. -POST-
-exports.author_editProfile_post = (req, res, next) => {
-    res.send("NOT IMPLEMENTED!")
-}
-// ////////////////////////////////////////
+exports.author_editProfile_post = [
+
+    // Validate and sanitise fieldss.
+    body('first_name')
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage('First name must be specified.')
+        .isAlphanumeric()
+        .withMessage('First name has non-alphanumeric characters.'),
+
+    body('family_name')
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage('Last name must be specified.')
+        .isAlphanumeric()
+        .withMessage('Last name has non-alphanumeric characters.'),
+
+    body('username')
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage('Username name must be specified.')
+        .isAlphanumeric()
+        .withMessage('Username name has non-alphanumeric characters.'),
+
+    body('email')
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage('Email must be specified.'),
+
+    async (req, res, next) => {
+        // Data comming from form
+        let input_data = req.body
 
 
-
+        // Extract the validation errors from a request.
+        const errors = validationResult(req)
+        if (!errors.isEmpty) {
+            // There are errors. Render form again with sanitized values/errors messages.
+            res.render('author_register', { title: "Edit profile", logged_in: false, author: input_data, auth: req.user, errors: errors.array() })
+        } else {
+            Author.findById(req.user._id)
+                .then(author => {
+                    author.first_name = input_data.first_name
+                    author.family_name = input_data.family_name
+                    author.username = input_data.username
+                    author.email = input_data.email
+                    author.save()
+                }).then(() => {
+                    return res.redirect('/blog/author/profile')
+                })
+                .catch(err => {
+                    return next(err)
+                })
+        }
+    }
+]
 
 // Display Author register form. -GET-
 exports.author_register_get = (req, res, next) => {
