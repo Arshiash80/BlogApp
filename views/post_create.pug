@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    form(action="", method="post")
+        .mb-3
+            label.form-label(for='title') Title
+            input#title.form-control(type='text', required=true, name='title')
+        .mb-3
+            label.form-label(for='content') Content
+            textarea#content.form-control(rows='3', required=true, name="content")
+
+        .input-group.mb-3
+            label.input-group-text(for='status') Status
+            select#status.form-select(required=true, name='status')
+                option(value='Public' selected='') Public
+                option(value='Private') Private
+        doctype
+        br
+        button.btn.btn-primary(type="submit") Create

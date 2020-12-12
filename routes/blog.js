@@ -55,7 +55,7 @@ router.get("/author/:id", authorController.author_detail)
 router.get('/post/create', auth.esureAuthenticated,postController.post_create_get)
 
 // POST request for creating Post form.
-router.get('/post/create', auth.esureAuthenticated,postController.post_create_post)
+router.post('/post/create', auth.esureAuthenticated,postController.post_create_post)
 
 // GET request for posts list page.
 router.get('/posts', postController.posts_list)
