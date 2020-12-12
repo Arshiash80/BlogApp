@@ -154,7 +154,7 @@ exports.author_register_post = [
         .withMessage('Password required.')
         .custom((value,{req, loc, path}) => { // Check's if password2 is iqual to password.
           if (value !== req.body.password) {
-              // trow error if passwords do not match
+              // trow error if passwords do not match.
               throw new Error("Passwords don't match");
           } else {
               return value;
@@ -200,7 +200,7 @@ exports.author_register_post = [
                             .then(author => {
                                 if (author) {
                                     // Author is exists. Render the page with the error
-                                    res.render('author_register', { title:"Register", author: input_data, errors: [{ msg:`An Author with ${input_data.email} email adress is exists.` }] })
+                                    res.render('author_register', { title:"Register", author: input_data, errors: [{ msg:`An Author with "${input_data.email}@gmail.com" email adress is exists.` }] })
                                 } else {
                                     Author.findOne({ username: new_author.username })
                                         .then(author => {
@@ -259,7 +259,7 @@ exports.author_login_post = (req, res, next) => {
     passport.authenticate('local', { 
         successRedirect: '/blog/posts',
         failureRedirect: '/blog/author/login',
-        failureFlash: false 
+        failureFlash: true 
     })(req, res, next)
 }
 // Display Author logout form. -GET-

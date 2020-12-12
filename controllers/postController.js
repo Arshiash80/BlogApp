@@ -64,7 +64,6 @@ exports.post_create_post = [
                 content: input_data.content,
                 status: input_data.status,
             })
-            console.log("New post: ", new_post)
 
             new_post.save().catch(err => { next(err) })
             // Successful - redirect to home page.

@@ -1,9 +1,7 @@
 extends layout
 
 block content
-    if errors 
-        each error in errors
-            li #{error.msg}
+    include ./partials/messages.pug
     if !auth
         form(action="", method="post")
             div.form-group

@@ -7,6 +7,8 @@ var logger = require('morgan');
 const session = require('express-session')
 const passport = require('passport')
 
+const flash = require('connect-flash')
+
 var indexRouter = require('./routes/index');
 var blogRouter = require('./routes/blog');
 
@@ -39,6 +41,17 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
 }))
+
+// Connect Flash
+app.use(flash());
+
+// Global vars for flash messages.
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.error_msg = req.flash('error_msg')
+  res.locals.error = req.flash('error')
+  next()
+}) 
 
 // Config passport 
 require('./configs/config_passport')(passport)
