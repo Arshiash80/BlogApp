@@ -67,7 +67,8 @@ exports.post_create_post = [
 
             new_post.save().catch(err => { next(err) })
             // Successful - redirect to home page.
-            res.redirect('/')
+            req.flash('success_msg', `"${new_post.title}" Post was created successfuly.`)
+            res.redirect('/blog/posts')
         }
     }
 ]

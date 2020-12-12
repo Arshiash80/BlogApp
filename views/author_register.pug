@@ -1,7 +1,6 @@
 extends layout
 
 block content
-    include ./partials/messages.pug
     if !auth
         form(action="", method="post")
             div.form-group
@@ -46,6 +45,6 @@ block content
                     input.form-control#username(name="username" type="text" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1", value=(undefined === auth.username ? '' : auth.username), required= true)
             div.form-group
                 label(for="email") Email: 
-                input#email.form-control(type="text", name="email", placeholder="Email", value=(undefined === auth.email ? '' : auth.email), required= true)
+                input#email.form-control(type="email", name="email", placeholder="Email", value=(undefined === auth.email ? '' : auth.email), required= true)
             br
             button.btn.btn-primary(type='submit') Edit

@@ -30,22 +30,25 @@ router.get("/author/profile/delete", auth.esureAuthenticated, authorController.a
 router.post("/author/profile/delete", auth.esureAuthenticated, authorController.author_deleteProfile_post)
 
 // GET request for display Author register form page.
-router.get('/author/register', authorController.author_register_get)
+router.get('/author/register', auth.esureNotAuthenticated, authorController.author_register_get)
 
 // POST request for display Author register form page.
 router.post('/author/register', authorController.author_register_post)
 
 // GET request for display Author login form page.
-router.get('/author/login', authorController.author_login_get)
+router.get('/author/login', auth.esureNotAuthenticated,authorController.author_login_get)
 
 // POST request for display Author login form.
 router.post('/author/login', authorController.author_login_post)
 
 // GET request for Author logout.
-router.get('/author/logout', authorController.author_logout)
+router.get('/author/logout', auth.esureAuthenticated, authorController.author_logout)
 
-// GET requst for display Author detail page.
+// GET requst for specific Author.
 router.get("/author/:id", authorController.author_detail)
+
+// GET requst for specific Author posts.
+router.get("/author/:id/posts", authorController.author_posts)
 
 
 // || POST ROUTES|| 

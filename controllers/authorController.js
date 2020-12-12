@@ -27,6 +27,26 @@ exports.authors_list = (req, res, next) => {
 exports.author_detail = (req, res, next) => {
     res.send(`author_detail id: ${req.params.id}`)
 }
+
+exports.author_posts = (req, res, next) => {
+    let authorsId = req.params.id
+
+    async.parallel({
+        posts: function(callback) {
+            Post.find({ 'author':authorsId })
+                .populate('author')
+                .exec(callback)
+        },
+        author: function(callback) {
+            Author.findById(authorsId)
+                .exec(callback)
+        }
+    }, function(err, results) {
+        if (err) { return next(err) }
+        // Successful - render Author posts.
+        res.render("author_posts", { title: `${results.author.username} posts:`, posts: results.posts, auth: req.user })
+    })
+}
 // /////////////////////////////////////////
 
 
@@ -71,8 +91,11 @@ exports.author_editProfile_post = [
     body('email')
         .trim()
         .isLength({ min: 1 })
-        .escape()
-        .withMessage('Email must be specified.'),
+        .withMessage('Email must be specified.')
+        .isEmail()
+        .withMessage('Enter a valid email!')
+        .normalizeEmail()
+        .escape(),
 
     async (req, res, next) => {
         // Data comming from form
@@ -93,6 +116,7 @@ exports.author_editProfile_post = [
                     author.email = input_data.email
                     author.save()
                 }).then(() => {
+                    req.flash("success_msg", "Youre profile updated successfuly!")
                     return res.redirect('/blog/author/profile')
                 })
                 .catch(err => {
@@ -138,8 +162,8 @@ exports.author_register_post = [
     body('email')
         .trim()
         .isLength({ min: 1 })
-        .escape()
-        .withMessage('Email must be specified.'),
+        .withMessage('Email must be specified.')
+        .escape(),
 
     body('password')
         .trim()
@@ -265,5 +289,6 @@ exports.author_login_post = (req, res, next) => {
 // Display Author logout form. -GET-
 exports.author_logout = (req, res, next) => {
     req.logout();
-    res.redirect('/');
+    req.flash('success_msg', `Youre logout successfuly.`)
+    res.redirect('/blog/posts');
 }

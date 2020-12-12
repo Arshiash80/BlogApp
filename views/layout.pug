@@ -27,7 +27,7 @@ html
                   li
                     a.dropdown-item(href='/blog/post/create') Add post
                   li
-                    a.dropdown-item(href='/blog/author/#{author.url}') My posts
+                    a.dropdown-item(href=`/blog/author/${auth._id}/posts`) My posts
                   li
                     hr.dropdown-divider
                   li
@@ -56,4 +56,6 @@ html
     h1= title
     hr
     div.container
+      br
+      include ./partials/messages.pug
       block content
