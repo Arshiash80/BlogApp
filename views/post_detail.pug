@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    p(style="font-size:1.5em;text-align:center;") !{post.content}
+
+    a.card-link(href='#') #[i.fas.fa-thumbs-up(style='font-size:2em;')]
+    |   #{post.likes}
+
+    p(style="font-size:1.5em;text-align:center;") Author : #[a(href=post.author.url) !{post.author.username}]
+
+    

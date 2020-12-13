@@ -22,7 +22,7 @@ AuthorSchema
 AuthorSchema
     .virtual('url')
     .get(function() {
-        return "/blog/author/" + this._id + "/posts"
+        return "/blog/author/" + this._id
     })
 
 module.exports = mongoose.model('Author', AuthorSchema)

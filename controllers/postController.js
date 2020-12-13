@@ -23,7 +23,14 @@ exports.posts_list = (req, res, next) => {
 
 // Displat Post detail page. -GET-
 exports.post_detail = (req, res, next) => {
-    res.send(`NOT IMPLEMENTED. id: ${req.params.id}`)
+    const post_id = req.params.id
+
+    Post.findById(post_id)
+    .populate('author')
+    .exec((err, post) => {
+        if (err) { return next(err) }
+        res.render("post_detail", { title: `${post.title}`, post: post, auth: req.user })
+    })
 }
 
 

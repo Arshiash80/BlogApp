@@ -19,13 +19,24 @@ exports.authors_list = (req, res, next) => {
 // /////////////////////////////////////////
 
 
-
-
-// TODO: Implent Author detail page.
-// /////////////////////////////////////////
 // Display author detail page. -GET-
 exports.author_detail = (req, res, next) => {
-    res.send(`author_detail id: ${req.params.id}`)
+    const author_id = req.params.id
+
+    async.parallel({
+        author: function(callback) {
+            Author.findById(author_id)
+                .exec(callback)
+        },
+        posts: function(callback) {
+            Post.countDocuments({ 'author': author_id })
+                .exec(callback)
+        }
+    }, function(err, results) {
+        if (err) { return next(err) }
+        // There are no errors. So render author detail page.
+        res.render('author_detail', { title:`${results.author.username}' profile`, posts: results.posts, author: results.author, auth: req.user })
+    })
 }
 
 exports.author_posts = (req, res, next) => {
@@ -47,9 +58,6 @@ exports.author_posts = (req, res, next) => {
         res.render("author_posts", { title: `${results.author.username} posts:`, posts: results.posts, auth: req.user })
     })
 }
-// /////////////////////////////////////////
-
-
 
 // Display author profile. -GET-'
 exports.author_profile = (req, res, next) => {
